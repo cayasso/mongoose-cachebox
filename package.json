@@ -1,0 +1,40 @@
+{
+  "name": "mongoose-cachebox",
+  "version": "0.1.0",
+  "description": "Cache mongoose queries in memory, redis or use your own driver",
+  "author": "Jonathan Brumley <cayasso@gmail.com>",
+  "homepage": "https://github.com/cayasso/mongoose-cachebox",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cayasso/mongoose-cachebox.git"
+  },
+  "keywords": [
+    "plugin",
+    "mongoose",
+    "query",
+    "cache",
+    "data",
+    "mongo",
+    "mongodb",
+    "redis",
+    "store",
+    "memory",
+    "catbox",
+    "ttl"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "catbox": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "expect.js": "*",
+    "redis": "0.8.x",
+    "mongodb": "1.3.x",
+    "mongoose": "3.6.x"
+  }
+}

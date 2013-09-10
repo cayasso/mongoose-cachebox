@@ -1,0 +1,11 @@
+{
+  "name": "mongoose-cachebox-basic-demo",
+  "version": "0.0.1",
+  "description": "Mongoose cachebox basic demo.",
+  "author": "Jonathan Brumley <cayasso@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "redis": "*",
+    "mongoose": "3.6.x"
+  }
+}
