@@ -24,7 +24,8 @@ var PeopleSchema = new Schema({
 var People = mongoose.model('People', PeopleSchema);
 
 function generate (amount, fn) {
-  /*var crowd = [];
+  /*
+  var crowd = [];
   var count = 0;
   while (count < amount) {
     crowd.push({
@@ -46,7 +47,7 @@ generate(3, function (err) {
   setTimeout(function () {
     People
     .find({})
-    .cache(6000)
+    .cache(60000)
     .exec(function (err, docs) {
       console.log('We found these documents ===============>', typeof docs);
     });
@@ -56,10 +57,10 @@ generate(3, function (err) {
   setInterval(function () {
     People
     .find({})
-    .cache(1)
+    .cache(60)
     .exec(function (err, docs) {
       console.log('We found these documents ===============>', typeof docs);
     });
-  }, 200);
+  }, 2000);
   
 });
