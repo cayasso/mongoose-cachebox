@@ -56,8 +56,7 @@ generate(3, function (err) {
   setInterval(function () {
     People
     .find({})
-    .cache(0)
-    //.uncache(function () {})
+    .cache(1)
     .exec(function (err, docs) {
       console.log('We found these documents ===============>', typeof docs);
     });
