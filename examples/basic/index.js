@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var names = ["Jacob", "Sophia", "Mason", "Isabella", "William", "Emma", "Jayden", "Olivia", "Noah", "Ava", "Michael", "Emily", "Ethan", "Abigail", "Alexander", "Madison", "Aiden", "Mia", "Daniel", "Chloe"];
 
 // connecting to mongoose
-mongoose.connect('mongodb://localhost/mongoose-cachebox-test-t');
+mongoose.connect('mongodb://localhost/mongoose-cachebox-test-tt');
 
 // adding mongoose cachebox
 mongooseCachebox(mongoose, {});
@@ -24,8 +24,8 @@ var PeopleSchema = new Schema({
 var People = mongoose.model('People', PeopleSchema);
 
 function generate (amount, fn) {
-  /*
-  var crowd = [];
+  
+  /*var crowd = [];
   var count = 0;
   while (count < amount) {
     crowd.push({
@@ -37,6 +37,7 @@ function generate (amount, fn) {
   console.log('creating crowd');
   People.create(crowd, fn);*/
   fn();
+
 }
 
 generate(3, function (err) {
@@ -47,20 +48,29 @@ generate(3, function (err) {
   setTimeout(function () {
     People
     .find({})
-    .cache(60000)
+    .cache(11500)
     .exec(function (err, docs) {
       console.log('We found these documents ===============>', typeof docs);
     });
   }, 5);
 
-
   setInterval(function () {
     People
     .find({})
-    .cache(60)
+    //.cache(0)
     .exec(function (err, docs) {
       console.log('We found these documents ===============>', typeof docs);
     });
-  }, 2000);
+  }, 1000);
+
+
+  /*setInterval(function () {
+    People
+    .find({})
+    .cache(0)
+    .exec(function (err, docs) {
+      console.log('We found these documents ===============>', typeof docs);
+    });
+  }, 2000);*/
   
 });
