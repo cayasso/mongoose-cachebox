@@ -47,6 +47,7 @@ Person.find({ active: true })
 ```
 
 ## API
+
 This plugin will add two more methods to a mongoose query instance `cache` and `ttl`.
 
 ### query.cache([cached], [ttl])
