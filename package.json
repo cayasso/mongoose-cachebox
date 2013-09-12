@@ -28,7 +28,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "catbox": "1.0.x",
+    "catbox": "git://github.com/cayasso/catbox.git",
     "debug": "0.7.x"
   },
   "devDependencies": {
