@@ -40,7 +40,6 @@ Person.find({ active: true })
 
   console.log(docs.ttl) // time left for expiration in ms
   console.log(docs.stored); // timestamp this query was cached
-
   console.log(docs);
 
 });
