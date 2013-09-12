@@ -120,7 +120,7 @@ describe('mongooseCachebox', function () {
           if (docs) {
             expect(docs.stored).to.be.a('number');
             expect(docs.ttl).to.be.a('number');
-            expect(docs.ttl).to.be.within(0, 59);
+            expect(docs.ttl).to.be.within(0, 60);
             done();
           }
         });
@@ -137,7 +137,7 @@ describe('mongooseCachebox', function () {
           if (docs) {
             expect(docs.stored).to.be.a('number');
             expect(docs.ttl).to.be.a('number');
-            expect(docs.ttl).to.be.within(0, 59);
+            expect(docs.ttl).to.be.within(0, 60);
             done();
           }
         });
