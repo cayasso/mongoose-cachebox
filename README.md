@@ -20,13 +20,15 @@ var mongoose = require('mongoose');
 
 var options = {
   cache: true, // start caching
-  ttl: 60000 // 60 seconds
+  ttl: 30000 // 30 seconds
 };
 
 // adding mongoose cachebox
 mongooseCachebox(mongoose, options);
 ```
-Then later you can do:
+Then later any `find` query will be cached for 60 seconds.
+
+You can also enable caching programatically by using the `cache` method directly from the query instance:
 
 ```javascript
 var Person = mongoose.model('Person');
@@ -73,7 +75,7 @@ Person.find({ active: true })
 });
 ```
 
-You can specify the ttl (time to live) value directly:
+You can specify the `ttl` (time to live) value directly:
 
 ```javascript
 Person.find({ active: true })
@@ -104,7 +106,7 @@ Person.find({ active: true })
 
 ### query.ttl(ttl)
 
-From this method you can also specify the `ttl` value for caching your query.
+By default the ttl value is `60000` (60 seconds) but you can use the `ttl` method to specify a different value:
 
 ```javascript
 Person.find({ active: true })
