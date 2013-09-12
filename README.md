@@ -11,8 +11,6 @@ Caching [mongoose](http://http://mongoosejs.com/) queries easier with [catbox](h
 $ npm install mongoose-cachebox
 ```
 
-## Early stages be patient
-
 ## Usage
 
 ``` javascript
