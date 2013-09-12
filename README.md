@@ -117,7 +117,7 @@ Person.find({ active: true })
 
 ## Redis
 
-By default mongoose-cachebox will cache queries to memory but it can also cache to `Redis` by specifying redis engine when initializing the plugin:
+By default mongoose-cachebox will use the memory engine to cache queries but it can cache queries using `Redis` by specifying redis engine when initializing the plugin:
 
 ```javascript
 var mongoose = require('mongoose');
@@ -135,6 +135,8 @@ var options = {
 // adding mongoose cachebox
 mongooseCachebox(mongoose, options);
 ```
+
+This module use [catbox](https://github.com/spumko/catbox) for the caching magic, so check out the project for more details and options.
 
 ## Run tests
 
