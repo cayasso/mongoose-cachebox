@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var names = ["Jacob", "Sophia", "Mason", "Isabella", "William", "Emma", "Jayden", "Olivia", "Noah", "Ava", "Michael", "Emily", "Ethan", "Abigail", "Alexander", "Madison", "Aiden", "Mia", "Daniel", "Chloe"];
 
 // connecting to mongoose
-mongoose.connect('mongodb://localhost/mongoose-cachebox-test-t');
+mongoose.connect('mongodb://127.0.0.1/mongoose-cachebox-testing');
 
 // adding mongoose cachebox
 mongooseCachebox(mongoose, { engine: 'memory' });
