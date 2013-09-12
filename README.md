@@ -15,6 +15,133 @@ $ npm install mongoose-cachebox
 
 ## Usage
 
+```javascript
+var mongoose = require('mongoose');
+
+var options = {
+  cache: true, // start caching
+  ttl: 60000 // 60 seconds
+};
+
+// adding mongoose cachebox
+mongooseCachebox(mongoose, options);
+```
+Then later you can do:
+
+```javascript
+var Person = mongoose.model('Person');
+
+Person.find({ active: true })
+.cache(50000) // cache for 50 seconds
+.exec(function (err, docs) { /* ... */
+  
+  if (err) throw error;
+
+  console.log(docs.ttl) // time left for expiration in ms
+  console.log(docs.stored); // timestamp this query was cached
+
+  console.log(docs);
+
+});
+
+```
+
+## API
+This plugin will add two more methods to a mongoose query instance `cache` and `ttl`.
+
+### query.cache([cached], [ttl])
+
+Both parameters `cache` and `ttl` are optional, the first one is for enable caching the second is for specifying the cache expiration (time to live).
+
+For start caching just call the `cache` method:
+
+```javascript
+Person.find({ active: true })
+.cache() // will enable caching with 60 seconds ttl
+.exec(function (err, docs) {
+  /* .... */
+});
+```
+
+The above is equivalent to this:
+
+```javascript
+Person.find({ active: true })
+.cache(true) // start caching with 60 seconds ttl
+.exec(function (err, docs) {
+  /* .... */
+});
+```
+
+You can specify the ttl (time to live) value directly:
+
+```javascript
+Person.find({ active: true })
+.cache(10000) // cache for 10 seconds
+.exec(function (err, docs) {
+  /* .... */
+});
+
+The above is equivalent to this:
+
+```javascript
+Person.find({ active: true })
+.cache(true, 10000) // enable caching with 10 seconds ttl
+.exec(function (err, docs) {
+  /* .... */
+});
+```
+
+And to disable caching for specific query just pass `false`:
+
+```javascript
+Person.find({ active: true })
+.cache(false) // stop caching this query
+.exec(function (err, docs) {
+  /* .... */
+});
+```
+
+### query.ttl(ttl)
+
+From this method you can also specify the `ttl` value for caching your query.
+
+```javascript
+Person.find({ active: true })
+.cache() // cache query
+.ttl(10000) // caching for 10 seconds
+.exec(function (err, docs) {
+  /* .... */
+});
+```
+
+## Redis
+
+By default mongoose-cachebox will cache queries to memory but it can also cache to `Redis` by specifying redis engine when initializing the plugin:
+
+```javascript
+var mongoose = require('mongoose');
+
+var options = {
+  engine: 'redis',
+  host: '127.0.0.1',
+  port: '6379',
+  password: 'secret',
+
+  cache: true, // start caching
+  ttl: 60000 // 60 seconds
+};
+
+// adding mongoose cachebox
+mongooseCachebox(mongoose, options);
+```
+
+## Run tests
+
+```bash
+$ make test
+```
+
 ## License
 
 (The MIT License)

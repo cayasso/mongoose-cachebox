@@ -114,6 +114,23 @@ describe('mongooseCachebox', function () {
     });
   });
 
+  it('should cache query with specific ttl if passed to `ttl` method', function (done) {
+    People.find({}).cache().ttl(60).exec(function (err, docs) {
+      if (err) return done(err);
+      setTimeout(function () {
+        People.find({}).exec(function (err, docs) {
+          if (err) return done(err);
+          if (docs) {
+            expect(docs.stored).to.be.a('number');
+            expect(docs.ttl).to.be.a('number');
+            expect(docs.ttl).to.be.within(0, 59);
+            done();
+          }
+        });
+      }, 2);
+    });
+  });
+
   it('should stop caching', function (done) {
     People.find({}).cache().exec(function (err, docs) {
       if (err) return done(err);
