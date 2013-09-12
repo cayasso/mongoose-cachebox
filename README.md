@@ -7,7 +7,7 @@ Caching [mongoose](http://http://mongoosejs.com/) queries easier with [catbox](h
 
 ## Instalation
 
-```bash
+``` bash
 $ npm install mongoose-cachebox
 ```
 
@@ -15,7 +15,7 @@ $ npm install mongoose-cachebox
 
 ## Usage
 
-```javascript
+``` javascript
 var mongoose = require('mongoose');
 
 var options = {
@@ -26,11 +26,12 @@ var options = {
 // adding mongoose cachebox
 mongooseCachebox(mongoose, options);
 ```
+
 Then later any `find` query will be cached for 60 seconds.
 
 You can also enable caching programatically by using the `cache` method directly from the query instance:
 
-```javascript
+``` javascript
 var Person = mongoose.model('Person');
 
 Person.find({ active: true })
@@ -57,7 +58,7 @@ Both parameters `cache` and `ttl` are optional, the first one is for enable cach
 
 For start caching just call the `cache` method:
 
-```javascript
+``` javascript
 Person.find({ active: true })
 .cache() // will enable caching with 60 seconds ttl
 .exec(function (err, docs) {
@@ -67,7 +68,7 @@ Person.find({ active: true })
 
 The above is equivalent to this:
 
-```javascript
+``` javascript
 Person.find({ active: true })
 .cache(true) // start caching with 60 seconds ttl
 .exec(function (err, docs) {
@@ -77,16 +78,17 @@ Person.find({ active: true })
 
 You can specify the `ttl` (time to live) value directly:
 
-```javascript
+``` javascript
 Person.find({ active: true })
 .cache(10000) // cache for 10 seconds
 .exec(function (err, docs) {
   /* .... */
 });
+```
 
 The above is equivalent to this:
 
-```javascript
+``` javascript
 Person.find({ active: true })
 .cache(true, 10000) // enable caching with 10 seconds ttl
 .exec(function (err, docs) {
@@ -96,7 +98,7 @@ Person.find({ active: true })
 
 And to disable caching for specific query just pass `false`:
 
-```javascript
+``` javascript
 Person.find({ active: true })
 .cache(false) // stop caching this query
 .exec(function (err, docs) {
@@ -108,7 +110,7 @@ Person.find({ active: true })
 
 By default the ttl value is `60000` (60 seconds) but you can use the `ttl` method to specify a different value:
 
-```javascript
+``` javascript
 Person.find({ active: true })
 .cache() // cache query
 .ttl(10000) // caching for 10 seconds
@@ -121,7 +123,7 @@ Person.find({ active: true })
 
 By default mongoose-cachebox will use the memory engine to cache queries but it can cache queries using `Redis` by specifying redis engine when initializing the plugin:
 
-```javascript
+``` javascript
 var mongoose = require('mongoose');
 
 var options = {
@@ -142,7 +144,7 @@ This module use [catbox](https://github.com/spumko/catbox) for the caching magic
 
 ## Run tests
 
-```bash
+``` bash
 $ make test
 ```
 
