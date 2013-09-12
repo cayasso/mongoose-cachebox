@@ -16,7 +16,7 @@ describe('mongooseCachebox', function () {
     mongoose.connect('mongodb://127.0.0.1/mongoose-cachebox-testing');
 
     db = mongoose.connection;
-    
+
     db.on('error', function (err) {
       done(err);
     });
