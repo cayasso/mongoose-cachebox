@@ -37,7 +37,7 @@ describe('mongooseCachebox', function () {
     });
 
     People = mongoose.model('People', PeopleSchema);
-  });  
+  });
 
   function generate (amount, fn) {
     var crowd = [];
@@ -81,7 +81,7 @@ describe('mongooseCachebox', function () {
   });
 
   it('should cache query if the `cache` method is called', function (done) {
-    People.find({}).cache().exec(function (err, docs) {
+    People.find({}).cache(70000).exec(function (err, docs) {
       if (err) return done(err);
       setTimeout(function () {
         People.find({}).exec(function (err, docs) {
@@ -89,11 +89,11 @@ describe('mongooseCachebox', function () {
           if (docs) {
             expect(docs.stored).to.be.a('number');
             expect(docs.ttl).to.be.a('number');
-            expect(docs.ttl).to.be.within(50000, 59999);
+            expect(docs.ttl).to.be.within(50000, 69999);
             done();
           }
         });
-      }, 2);
+      }, 1000);
     });
   });
 
@@ -114,7 +114,7 @@ describe('mongooseCachebox', function () {
   it('should cache query with specific ttl if passed to `cache` method', function (done) {
     People.find({}).cache(60).exec(function (err, docs) {
       if (err) return done(err);
-      setTimeout(function () {
+      //setTimeout(function () {
         People.find({}).exec(function (err, docs) {
           if (err) return done(err);
           if (docs) {
@@ -124,14 +124,14 @@ describe('mongooseCachebox', function () {
             done();
           }
         });
-      }, 2);
+      //}, 2);
     });
   });
 
   it('should cache query with specific ttl if passed to `ttl` method', function (done) {
     People.find({}).cache().ttl(60).exec(function (err, docs) {
       if (err) return done(err);
-      setTimeout(function () {
+      //setTimeout(function () {
         People.find({}).exec(function (err, docs) {
           if (err) return done(err);
           if (docs) {
@@ -141,7 +141,7 @@ describe('mongooseCachebox', function () {
             done();
           }
         });
-      }, 2);
+      //}, 2);
     });
   });
 
