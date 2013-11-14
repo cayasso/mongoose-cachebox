@@ -111,7 +111,7 @@ By default the ttl value is `60000` (60 seconds) but you can use the `ttl` metho
 ``` javascript
 Person.find({ active: true })
 .cache() // cache query
-.ttl(10000) // caching for 10 seconds
+.ttl(10) // caching for 10 seconds
 .exec(function (err, docs) {
   /* .... */
 });
@@ -119,7 +119,7 @@ Person.find({ active: true })
 
 ## Redis
 
-By default mongoose-cachebox will use the memory engine to cache queries but it can cache queries using `Redis` by specifying redis engine when initializing the plugin:
+By default `mongoose-cachebox` will use the memory engine to cache queries but it can cache queries using `Redis` by specifying redis engine when initializing the plugin:
 
 ``` javascript
 var mongoose = require('mongoose');
@@ -128,17 +128,14 @@ var options = {
   engine: 'redis',
   host: '127.0.0.1',
   port: '6379',
-  password: 'secret',
-
-  cache: true, // start caching
-  ttl: 60000 // 60 seconds
+  password: 'secret'
 };
 
 // adding mongoose cachebox
 mongooseCachebox(mongoose, options);
 ```
 
-This module use [catbox](https://github.com/spumko/catbox) for the caching magic, so check out the project for more details and options.
+This module use [cacheman](https://github.com/cayasso/cacheman) for the caching magic, so check out the project for more details and options.
 
 ## Run tests
 

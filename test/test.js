@@ -8,8 +8,7 @@ var db;
 
 var names = ["Jacob", "Sophia", "Mason", "Isabella", "William", "Emma", "Jayden", "Olivia", "Noah", "Ava", "Michael", "Emily", "Ethan", "Abigail", "Alexander", "Madison", "Aiden", "Mia", "Daniel", "Chloe"];
 
-describe('mongooseCachebox', function () {
-
+describe('mongoose-cachebox', function () {
 
   before(function (done) {
     // connecting to mongoose
@@ -52,8 +51,6 @@ describe('mongooseCachebox', function () {
     People.create(crowd, fn);
   }
 
-
-
   beforeEach(function(done){
     generate(10, done);
   });
@@ -67,13 +64,13 @@ describe('mongooseCachebox', function () {
   });
 
   it('should not cache query if `cache` method is not called', function (done) {
-    People.find({}).exec(function (err, docs) {
+    var query = People.find({});
+    query.exec(function (err, docs) {
       if (err) return done(err);
       People.find({}).exec(function (err, docs) {
         if (err) return done(err);
         if (docs) {
-          expect(docs.stored).to.be(undefined);
-          expect(docs.ttl).to.be(undefined);
+          expect(query.isFromCache).to.be(true);
           done();
         }
       });
@@ -81,30 +78,41 @@ describe('mongooseCachebox', function () {
   });
 
   it('should cache query if the `cache` method is called', function (done) {
-    People.find({}).cache(70000).exec(function (err, docs) {
+    this.timeout(0);
+    var query = People.find({});
+    query.cache(1).exec(function (err, docs) {
       if (err) return done(err);
-      setTimeout(function () {
+      People.find({}).exec(function (err, docs) {
+        if (err) return done(err);
         People.find({}).exec(function (err, docs) {
           if (err) return done(err);
-          if (docs) {
-            expect(docs.stored).to.be.a('number');
-            expect(docs.ttl).to.be.a('number');
-            expect(docs.ttl).to.be.within(50000, 69999);
-            done();
-          }
+          People.find({}).exec(function (err, docs) {
+            if (err) return done(err);
+            People.find({}).exec(function (err, docs) {
+              if (err) return done(err);
+              People.find({}).exec(function (err, docs) {
+                if (err) return done(err);
+                if (docs) {
+                  expect(docs).to.be.ok();
+                  expect(query.isFromCache).to.be(true);
+                  done();
+                }
+              });
+            });
+          });
         });
-      }, 1000);
+      });
     });
   });
 
   it('should work with lean enabled', function (done) {
-    People.find({}).lean().cache().exec(function (err, docs) {
+    var query = People.find({});
+    query.lean().cache().exec(function (err, docs) {
       if (err) return done(err);
       People.find({}).exec(function (err, docs) {
         if (err) return done(err);
         if (docs) {
-          expect(docs.stored).to.be.a('number');
-          expect(docs.ttl).to.be.a('number');
+           expect(query.isFromCache).to.be(true);
           done();
         }
       });
@@ -112,47 +120,57 @@ describe('mongooseCachebox', function () {
   });
 
   it('should cache query with specific ttl if passed to `cache` method', function (done) {
-    People.find({}).cache(60).exec(function (err, docs) {
+    var query = People.find({});
+    query.cache(30).exec(function (err, docs) {
       if (err) return done(err);
-      //setTimeout(function () {
-        People.find({}).exec(function (err, docs) {
-          if (err) return done(err);
-          if (docs) {
-            expect(docs.stored).to.be.a('number');
-            expect(docs.ttl).to.be.a('number');
-            expect(docs.ttl).to.be.within(0, 60);
-            done();
-          }
-        });
-      //}, 2);
+      People.find({}).exec(function (err, docs) {
+        if (err) return done(err);
+        if (docs) {
+           expect(query.isFromCache).to.be(true);
+          done();
+        }
+      });
     });
   });
 
-  it('should cache query with specific ttl if passed to `ttl` method', function (done) {
-    People.find({}).cache().ttl(60).exec(function (err, docs) {
+  it('should cache query with specific ttl is passed to `ttl` method', function (done) {
+    var query = People.find({});
+    query.cache().ttl(50).exec(function (err, docs) {
       if (err) return done(err);
-      //setTimeout(function () {
         People.find({}).exec(function (err, docs) {
           if (err) return done(err);
           if (docs) {
-            expect(docs.stored).to.be.a('number');
-            expect(docs.ttl).to.be.a('number');
-            expect(docs.ttl).to.be.within(0, 60);
+            expect(query.ttl()).to.be(50);
+            expect(query.isFromCache).to.be(true);
             done();
           }
         });
-      //}, 2);
+    });
+  });
+
+  it('should cache query with specific human readable ttl is passed to `ttl` method', function (done) {
+    var query = People.find({});
+    query.cache().ttl('5s').exec(function (err, docs) {
+      if (err) return done(err);
+        People.find({}).exec(function (err, docs) {
+          if (err) return done(err);
+          if (docs) {
+            expect(query.ttl()).to.be('5s');
+            expect(query.isFromCache).to.be(true);
+            done();
+          }
+        });
     });
   });
 
   it('should stop caching', function (done) {
-    People.find({}).cache().exec(function (err, docs) {
+    var query = People.find({});
+    query.cache().exec(function (err, docs) {
       if (err) return done(err);
       People.find({}).cache(false).exec(function (err, docs) {
         if (err) return done(err);
         if (docs) {
-          expect(docs.stored).to.be(undefined);
-          expect(docs.ttl).to.be(undefined);
+          expect(query.isCacheEnabled).to.be(false);
           done();
         }
       });
@@ -164,13 +182,13 @@ describe('mongooseCachebox', function () {
     var Model = mongoose.model('A', ModelSchema);
     ModelSchema.set('cache', true);
     Model.create([{ field: 'a' }, { field: 'b' }, { field: 'c' }], function () {
-      Model.find({}).exec(function (err, docs) {
+      var query = Model.find({});
+      query.exec(function (err, docs) {
         if (err) return done(err);
         Model.find({}).exec(function (err, docs) {
           if (err) return done(err);
           if (docs) {
-            expect(docs.stored).to.be.a('number');
-            expect(docs.ttl).to.be.a('number');
+            expect(query.isFromCache).to.be(true);
             Model.remove();
             done();
           }
@@ -184,17 +202,15 @@ describe('mongooseCachebox', function () {
     var Model = mongoose.model('B', ModelSchema);
 
     ModelSchema.set('cache', true);
-    ModelSchema.set('ttl', 1000);
+    ModelSchema.set('ttl', 90);
 
     Model.create([{ a: 'a', b: 1 }, { a: 'b', b: 1 }, { a: 'c', b: 1 }], function () {
-      Model.find({ a: 'a'}, function (err, docs) {
+      var query = Model.find({ a: 'a'}, function (err, docs) {
         if (err) return done(err);
         Model.find({ a: 'a'}, function (err, docs) {
           if (err) return done(err);
           if (docs) {
-            expect(docs.stored).to.be.a('number');
-            expect(docs.ttl).to.be.a('number');
-            expect(docs.ttl).to.be.within(0, 1000);
+            expect(query.ttl()).to.be(90);
             Model.remove();
             done();
           }
