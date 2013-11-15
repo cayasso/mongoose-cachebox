@@ -1,6 +1,6 @@
 {
   "name": "mongoose-cachebox",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Cache mongoose queries in memory, redis or use your own driver",
   "author": "Jonathan Brumley <cayasso@gmail.com>",
   "homepage": "https://github.com/cayasso/mongoose-cachebox",
