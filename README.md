@@ -18,7 +18,7 @@ var mongoose = require('mongoose');
 
 var options = {
   cache: true, // start caching
-  ttl: 30000 // 30 seconds
+  ttl: 30 // 30 seconds
 };
 
 // adding mongoose cachebox
@@ -33,7 +33,7 @@ You can also enable caching programatically by using the `cache` method directly
 var Person = mongoose.model('Person');
 
 Person.find({ active: true })
-.cache(50000) // cache for 50 seconds
+.cache('50s') // cache for 50 seconds
 .exec(function (err, docs) { /* ... */
   
   if (err) throw error;
@@ -78,7 +78,7 @@ You can specify the `ttl` (time to live) value directly:
 
 ``` javascript
 Person.find({ active: true })
-.cache(10000) // cache for 10 seconds
+.cache(10) // cache for 10 seconds
 .exec(function (err, docs) {
   /* .... */
 });
@@ -88,7 +88,7 @@ The above is equivalent to this:
 
 ``` javascript
 Person.find({ active: true })
-.cache(true, 10000) // enable caching with 10 seconds ttl
+.cache(true, 10) // enable caching with 10 seconds ttl
 .exec(function (err, docs) {
   /* .... */
 });
