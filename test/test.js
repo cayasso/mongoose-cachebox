@@ -1,12 +1,11 @@
-var mongooseCachebox = require('../');
-var mongoose = require('mongoose');
-var expect = require('expect.js');
-var Schema = mongoose.Schema;
-var PeopleSchema;
-var People;
-var db;
-
-var names = ["Jacob", "Sophia", "Mason", "Isabella", "William", "Emma", "Jayden", "Olivia", "Noah", "Ava", "Michael", "Emily", "Ethan", "Abigail", "Alexander", "Madison", "Aiden", "Mia", "Daniel", "Chloe"];
+var mongooseCachebox = require('../')
+  , mongoose = require('mongoose')
+  , expect = require('expect.js')
+  , Schema = mongoose.Schema
+  , PeopleSchema
+  , People
+  , db
+  , names = ["Jacob", "Sophia", "Mason", "Isabella", "William", "Emma", "Jayden", "Olivia", "Noah", "Ava", "Michael", "Emily", "Ethan", "Abigail", "Alexander", "Madison", "Aiden", "Mia", "Daniel", "Chloe"];
 
 describe('mongoose-cachebox', function () {
 
@@ -70,7 +69,7 @@ describe('mongoose-cachebox', function () {
       People.find({}).exec(function (err, docs) {
         if (err) return done(err);
         if (docs) {
-          expect(query.isFromCache).to.be(true);
+          expect(query.isFromCache).to.be(false);
           done();
         }
       });
@@ -118,7 +117,7 @@ describe('mongoose-cachebox', function () {
       });
     });
   });
-
+  
   it('should cache query with specific ttl if passed to `cache` method', function (done) {
     var query = People.find({});
     query.cache(30).exec(function (err, docs) {
@@ -215,6 +214,24 @@ describe('mongoose-cachebox', function () {
             done();
           }
         });
+      });
+    });
+  });
+
+  it('should allow passing middleware for overwriting data', function (done) {
+    var query = People.find({});
+    var overwrite = ['overwrited'];
+    query.cache(function (key, data, ttl, next) {
+      if (data) return next(null, overwrite, ttl);
+      next();
+    }).exec(function (err, docs) {
+      if (err) return done(err);
+      People.find({}).exec(function (err, docs) {
+        if (err) return done(err);
+        if (docs) {
+          expect(docs).to.be(overwrite);
+          done();
+        }
       });
     });
   });
