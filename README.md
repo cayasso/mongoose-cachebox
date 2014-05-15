@@ -5,7 +5,7 @@
 
 Caching [mongoose](http://http://mongoosejs.com/) queries easier with [cacheman](https://github.com/cayasso/cacheman) that supports in-memory, and Redis engines.
 
-## Instalation
+## Installation
 
 ``` bash
 $ npm install mongoose-cachebox
@@ -32,16 +32,15 @@ You can also enable caching programatically by using the `cache` method directly
 ``` javascript
 var Person = mongoose.model('Person');
 
-Person.find({ active: true })
-.cache('50s') // cache for 50 seconds
-.exec(function (err, docs) { /* ... */
-  
-  if (err) throw error;
+Person
+  .find({ active: true })
+  .cache('50s') // cache for 50 seconds
+  .exec(function (err, docs) {
+    if (err) throw error;
 
-  console.log(docs.ttl) // time left for expiration in ms
-  console.log(docs.stored); // timestamp this query was cached
-  console.log(docs);
-
+    console.log(docs.ttl); // time left for expiration in ms
+    console.log(docs.stored); // timestamp this query was cached
+    console.log(docs);
 });
 
 ```
@@ -57,50 +56,55 @@ Both parameters `cache` and `ttl` are optional, the first one is for enable cach
 For start caching just call the `cache` method:
 
 ``` javascript
-Person.find({ active: true })
-.cache() // will enable caching with 60 seconds ttl
-.exec(function (err, docs) {
-  /* .... */
+Person
+  .find({ active: true })
+  .cache() // will enable caching with 60 seconds ttl
+  .exec(function (err, docs) {
+    /* .... */
 });
 ```
 
 The above is equivalent to this:
 
 ``` javascript
-Person.find({ active: true })
-.cache(true) // start caching with 60 seconds ttl
-.exec(function (err, docs) {
-  /* .... */
+Person
+  .find({ active: true })
+  .cache(true) // start caching with 60 seconds ttl
+  .exec(function (err, docs) {
+    /* .... */
 });
 ```
 
 You can specify the `ttl` (time to live) value directly:
 
 ``` javascript
-Person.find({ active: true })
-.cache(10) // cache for 10 seconds
-.exec(function (err, docs) {
-  /* .... */
+Person
+  .find({ active: true })
+  .cache(10) // cache for 10 seconds
+  .exec(function (err, docs) {
+    /* .... */
 });
 ```
 
 The above is equivalent to this:
 
 ``` javascript
-Person.find({ active: true })
-.cache(true, 10) // enable caching with 10 seconds ttl
-.exec(function (err, docs) {
-  /* .... */
+Person
+  .find({ active: true })
+  .cache(true, 10) // enable caching with 10 seconds ttl
+  .exec(function (err, docs) {
+    /* .... */
 });
 ```
 
 And to disable caching for specific query just pass `false`:
 
 ``` javascript
-Person.find({ active: true })
-.cache(false) // stop caching this query
-.exec(function (err, docs) {
-  /* .... */
+Person
+  .find({ active: true })
+  .cache(false) // stop caching this query
+  .exec(function (err, docs) {
+    /* .... */
 });
 ```
 
@@ -109,11 +113,12 @@ Person.find({ active: true })
 By default the ttl value is `60000` (60 seconds) but you can use the `ttl` method to specify a different value:
 
 ``` javascript
-Person.find({ active: true })
-.cache() // cache query
-.ttl(10) // caching for 10 seconds
-.exec(function (err, docs) {
-  /* .... */
+Person
+  .find({ active: true })
+  .cache() // cache query
+  .ttl(10) // caching for 10 seconds
+  .exec(function (err, docs) {
+    /* .... */
 });
 ```
 
