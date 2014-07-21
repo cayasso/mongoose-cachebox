@@ -1,3 +1,4 @@
 node_modules
-examples
-npm-debug.log
+.DS_Store
+npm_debug.log
+.data

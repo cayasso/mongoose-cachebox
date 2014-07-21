@@ -33,9 +33,10 @@
     "cacheman-redis": "~0.1.0"
   },
   "devDependencies": {
-    "mocha": "*",
     "expect.js": "*",
-    "redis": "0.8.x",
-    "mongoose": "~3.6.x"
+    "mocha": "*",
+    "mongoose": "~3.6.x",
+    "pre-commit": "0.0.9",
+    "redis": "0.8.x"
   }
 }
