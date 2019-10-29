@@ -28,7 +28,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "debug": "0.7.x",
+    "debug": "4.1.x",
     "cacheman": "~1.x.x",
     "cacheman-redis": "~0.1.0"
   },
